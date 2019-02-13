@@ -1,0 +1,18 @@
+node_modules
+npm-debug.log*
+.DS_Store
+dist
+/plugins.js
+/static
+.history
+
+
+# Coverage report
+.nyc_output
+coverage
+
+package-lock.json
+
+plugins
+
+yarn-error.log
