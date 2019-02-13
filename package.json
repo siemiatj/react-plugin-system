@@ -4,7 +4,7 @@
     "build-prod": "webpack --config webpack.prod.js --bail --display-error-details",
     "lint": "eslint .",
     "start": "node server.js",
-    "stylelint": "stylelint 'src/assets/**/*.css'",
+    "stylelint": "stylelint 'src/assets/**/*.css'"
   },
   "devDependencies": {
     "@babel/core": "7.2.2",
@@ -71,6 +71,6 @@
     "redux-dynamic-reducer": "2.0.2",
     "redux-promise": "0.6.0",
     "redux-thunk": "2.2.0",
-    "uuid": "3.3.2",
+    "uuid": "3.3.2"
   }
 }

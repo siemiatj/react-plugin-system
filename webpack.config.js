@@ -11,7 +11,6 @@ const plugins = [
   }),
 ];
 
-
 const entries = {
   index: [
     'webpack-dev-server/client?http://localhost:3000',
