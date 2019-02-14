@@ -3,11 +3,10 @@ import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
-// import '../assets/css/styles.css';
 import { addPlugins } from '../actions/PluginActions';
 import PluginsRegistry from '../services/PluginsRegistry';
 import CustomRouter from './CustomRouter';
-import configureStore from '../store/configureStore';
+import configureStore from '../configureStore';
 
 const store = configureStore(browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);

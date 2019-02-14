@@ -11,7 +11,7 @@ class VisibleTodoList extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.filter !== prevProps.filter) { 
+    if (this.props.filter !== prevProps.filter) {
       this.fetchData();
     }
   }
@@ -23,12 +23,8 @@ class VisibleTodoList extends Component {
 
   render() {
     const { toggleTodo, ...rest } = this.props;
-    return (
-      <TodoList
-      {...rest}
-      onTodoClick={toggleTodo}
-      />
-    );
+
+    return <TodoList {...rest} onTodoClick={toggleTodo} />;
   }
 }
 
@@ -36,14 +32,13 @@ const mapStateToProps = (state, { params }) => {
   const filter = params.filter || 'all';
   return {
     todos: getVisibleTodos(state, filter),
-    filter
+    filter,
   };
 };
 
-VisibleTodoList = withRouter(connect(
-  mapStateToProps,
-  actions
-)(VisibleTodoList));
-
-export default VisibleTodoList;
-
+export default withRouter(
+  connect(
+    mapStateToProps,
+    actions
+  )(VisibleTodoList)
+);
