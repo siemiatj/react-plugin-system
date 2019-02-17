@@ -1,8 +1,6 @@
 import React from 'react';
 import { IndexRoute, NoMatch, Route } from 'react-router';
 
-import Dashboard from './components/Dashboard';
-import Start from './components/Start';
 import Todos from './components/Todos';
 
 export const getRoutes = (store, plugins) => {
@@ -34,9 +32,9 @@ export const getRoutes = (store, plugins) => {
   ];
 
   return (
-    <Route path="/" component={Dashboard}>
+    <Route path="/">
       <Route childRoutes={childRoutes}>
-        <IndexRoute component={Start} />
+        <IndexRoute component={Todos} />
       </Route>
       <Route path="*" component={NoMatch} />
     </Route>
