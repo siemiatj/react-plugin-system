@@ -20,15 +20,19 @@ const entries = {
   ],
 };
 
-if (!fs.existsSync(path.join(__dirname, 'plugins.js'))) {
-  plugins.push(
-    new webpack.DefinePlugin({
-      PLUGINS: JSON.stringify([]),
-    })
-  );
-} else {
-  entries.plugins = './plugins.js';
+let appPlugins = [];
+
+if (fs.existsSync(path.join(__dirname, 'plugins.js'))) {
+  const loadedPlugins = require('./plugins');
+
+  appPlugins = loadedPlugins.PLUGINS;
 }
+
+plugins.push(
+  new webpack.DefinePlugin({
+    PLUGINS: JSON.stringify(appPlugins),
+  })
+);
 
 module.exports = {
   mode: 'development',
