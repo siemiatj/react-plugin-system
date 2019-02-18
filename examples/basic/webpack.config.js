@@ -1,36 +1,46 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
 var fs = require('fs');
 
 const plugins = [
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify('production'),
-    },
-  }),
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NoEmitOnErrorsPlugin(),
   new HtmlWebpackPlugin({
-    template: './index.html',
+    template: 'index.html',
   }),
-  new CopyWebpackPlugin([{ from: './plugins/**', to: './', ignore: ['*.md'] }]),
 ];
 
-if (!fs.existsSync(path.join(__dirname, 'dist/plugins.js'))) {
-  plugins.push(
-    new webpack.DefinePlugin({
-      PLUGINS: JSON.stringify([]),
-    })
-  );
+const entries = {
+  index: [
+    'webpack-dev-server/client?http://localhost:3000',
+    'webpack/hot/only-dev-server',
+    '@babel/polyfill',
+    './src/index.js',
+  ],
+};
+
+let appPlugins = [];
+
+if (fs.existsSync(path.join(__dirname, 'plugins.js'))) {
+  const loadedPlugins = require('./plugins');
+
+  appPlugins = loadedPlugins.PLUGINS;
 }
 
+plugins.push(
+  new webpack.DefinePlugin({
+    PLUGINS: JSON.stringify(appPlugins),
+  })
+);
+
 module.exports = {
-  mode: 'production',
-  devtool: 'cheap-module-source-map',
-  entry: ['@babel/polyfill', './src/index.jsx', './favicon.png'],
+  mode: 'development',
+  devtool: 'eval',
+  entry: entries,
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'bundle-[hash].js',
+    path: '/',
+    filename: '[name].bundle-[hash].js',
     publicPath: '/',
   },
   plugins,
@@ -43,16 +53,6 @@ module.exports = {
       },
       {
         test: /\.(jpg|png|svg|eot|woff|woff2|ttf|gif)$/,
-        exclude: /\w*(logo)\w*\.(jpg|png)$/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            name: '[path][name].[hash].[ext]',
-          },
-        },
-      },
-      {
-        test: /\w*(logo)\w*\.(jpg|png)$/,
         use: {
           loader: 'file-loader',
           options: {
@@ -72,12 +72,12 @@ module.exports = {
               plugins: () => [
                 require('postcss-import')({
                   addDependencyTo: webpack,
-                  path: ['node_modules'],
+                  path: ['node_modules', 'src/assets'],
                 }),
                 require('postcss-color-function'),
                 require('postcss-url')(),
-                require('autoprefixer')({ browsers: ['last 2 versions'] }),
                 require('precss')(),
+                require('autoprefixer')({ browsers: ['last 2 versions'] }),
               ],
             },
           },
@@ -87,12 +87,16 @@ module.exports = {
         test: /\.html$/,
         loader: 'html-loader',
       },
+      {
+        test: /\.json$/,
+        loader: 'json-loader',
+      },
     ],
   },
   resolve: {
     extensions: ['.js', '.json'],
     alias: {
-      '@plugins$': path.resolve('./plugins'),
+      '@plugins': path.resolve('./plugins'),
     },
   },
 };

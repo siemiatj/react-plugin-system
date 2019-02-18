@@ -1,5 +1,5 @@
 # react-plugin-system
-Basic plugin system for React applications
+Basic plugin system for ReactJS applications using redux for the data layer.
 
 ## Available Scripts
 
@@ -22,4 +22,5 @@ The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
 
 ## Learn More
+
 
