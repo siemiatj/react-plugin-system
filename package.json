@@ -1,6 +1,6 @@
 {
   "name": "react-plugin-system",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Plugin system for ReactJS",
   "author": "Kuba Siemiatkowski <kuba@saskla.cz>",
   "scripts": {
