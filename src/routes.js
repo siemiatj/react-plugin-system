@@ -1,8 +1,6 @@
 import React from 'react';
 import { IndexRoute, NoMatch, Route } from 'react-router';
 
-import Todos from './components/Todos';
-
 export const getRoutes = (store, plugins) => {
   const getPluginsRoutes = plugins => {
     if (plugins.length) {
@@ -24,10 +22,7 @@ export const getRoutes = (store, plugins) => {
 
   const pluginRoutes = getPluginsRoutes(plugins);
   const childRoutes = [
-    {
-      path: '/todos(/:filter)',
-      component: Todos,
-    },
+    // your app routes
     ...pluginRoutes,
   ];
 

@@ -1,13 +1,11 @@
-import { routerMiddleware } from 'react-router-redux';
 import { applyMiddleware, compose } from 'redux';
 import { createStore } from 'redux-dynamic-reducer';
-import thunk from 'redux-thunk';
-import promiseMiddleware from 'redux-promise';
-import rootReducer from './reducers/index';
 
 export default function configureStore(history) {
-  const middleware = [thunk, promiseMiddleware, routerMiddleware(history)];
+  // your middlewares
+  const middleware = [];
   const store = createStore(
+    // store is initialized without state
     null,
     compose(
       applyMiddleware(...middleware),
@@ -17,14 +15,18 @@ export default function configureStore(history) {
     )
   );
 
+  // attach reducers to your empty store
   store.attachReducers(rootReducer);
 
+  // optional hot-reload
+  /*
   if (module.hot) {
     module.hot.accept('./reducers', () => {
       const nextReducer = rootReducer;
       store.replaceReducer(nextReducer);
     });
   }
+  */
 
   return store;
 }
