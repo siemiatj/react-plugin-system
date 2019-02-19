@@ -11,7 +11,7 @@ This is a pretty simple extension to your typical React application. What you'll
 
 ## Contents of this repository
 
-Basically the structure of this repo can be divided into two separate things:
+The structure of this repo can be divided into two separate parts:
 
 #### Essentials
 
