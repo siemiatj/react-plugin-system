@@ -1,27 +1,26 @@
-import { routerMiddleware } from 'react-router-redux';
+import { routerMiddleware } from 'connected-react-router';
 import { applyMiddleware, compose } from 'redux';
 import { createStore } from 'redux-dynamic-reducer';
 import thunk from 'redux-thunk';
 import promiseMiddleware from 'redux-promise';
-import rootReducer from './reducers/index';
+import { createRootReducer } from './reducers';
 
 export default function configureStore(history) {
+  const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
   const middleware = [thunk, promiseMiddleware, routerMiddleware(history)];
   const store = createStore(
     null,
-    compose(
+    composeEnhancer(
       applyMiddleware(...middleware),
-      window.__REDUX_DEVTOOLS_EXTENSION__
-        ? window.__REDUX_DEVTOOLS_EXTENSION__()
-        : f => f
     )
   );
 
-  store.attachReducers(rootReducer);
+  store.attachReducers(createRootReducer(history));
 
   if (module.hot) {
     module.hot.accept('./reducers', () => {
-      const nextReducer = rootReducer;
+      const nextReducer = createRootReducer(history);
       store.replaceReducer(nextReducer);
     });
   }

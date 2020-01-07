@@ -1,42 +1,37 @@
 import React from 'react';
-import { IndexRoute, NoMatch, Route } from 'react-router';
+import { Route, Switch } from 'react-router-dom';
 
+import Dashboard from './components/Dashboard';
 import Todos from './components/Todos';
+import NotFound from './components/NotFound';
 
 export const getRoutes = (store, plugins) => {
-  const getPluginsRoutes = plugins => {
-    if (plugins.length) {
-      const routes = plugins.map(plugin => {
-        if (plugin.routes && plugin.routes.length) {
-          const pluginRoutes = [...plugin.routes];
+  if (plugins.length < 1) {
+    return [];
+  }
 
-          return pluginRoutes[0];
-        }
-
-        return [];
-      });
-
-      return routes;
+  let pluginRoutes = [];
+  plugins.map(plugin => {
+    if (typeof plugin.routes === 'undefined') {
+      return;
     }
 
-    return [];
-  };
+    pluginRoutes.push(plugin.routes);
+  });
+  console.log(pluginRoutes);
 
-  const pluginRoutes = getPluginsRoutes(plugins);
-  const childRoutes = [
-    {
-      path: '/todos(/:filter)',
-      component: Todos,
-    },
-    ...pluginRoutes,
-  ];
+  let result = (
+    <Switch>
+      <Route path="/todos/:filter?" component={Todos} />
+      <Route exact path="/" component={Dashboard} />
 
-  return (
-    <Route path="/">
-      <Route childRoutes={childRoutes}>
-        <IndexRoute component={Todos} />
-      </Route>
-      <Route path="*" component={NoMatch} />
-    </Route>
+      {pluginRoutes}
+
+      <Route component={NotFound} />
+    </Switch>
   );
+
+  console.log(result);
+
+  return result;
 };

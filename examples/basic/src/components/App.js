@@ -1,15 +1,17 @@
+import '../assets/scss/styles.scss';
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import { createBrowserHistory } from 'history';
 
 import { addPlugins } from '../actions/PluginActions';
 import PluginsRegistry from '../services/PluginsRegistry';
-import CustomRouter from './CustomRouter';
+import { ConnectedRouter } from 'connected-react-router';
 import configureStore from '../configureStore';
+import { getRoutes } from '../routes';
 
-const store = configureStore(browserHistory);
-const history = syncHistoryWithStore(browserHistory, store);
+const history = createBrowserHistory();
+
+const store = configureStore(history);
 const APP_PLUGINS = PLUGINS ? PLUGINS : [];
 
 export default class App extends Component {
@@ -25,20 +27,20 @@ export default class App extends Component {
 
     if (APP_PLUGINS.length) {
       const plugins = APP_PLUGINS.map(plugin => {
-        const waitForChunk = () =>
-          import(`@plugins/${plugin}/index.js`)
-            .then(module => module)
-            .catch(() => {
-              // eslint-disable-next-line no-console
-              console.error(`Error loading plugin ${plugin}`);
-            });
+        const waitForChunk = () => {
+          return import(`@plugins/${plugin}/index.js`)
+            .then(module => module);
+        }
 
         return new Promise(resolve =>
           waitForChunk().then(file => {
             this.pluginsRegistry.addEntry(plugin, file);
             resolve({ name: plugin, file });
           })
-        );
+        ).catch((e) => {
+          // eslint-disable-next-line no-console
+          console.error(`Error loading plugin "${plugin}": ${e}`);
+        });
       });
 
       Promise.all(plugins).then(res => {
@@ -76,7 +78,9 @@ export default class App extends Component {
 
     return (
       <Provider store={store}>
-        <CustomRouter store={store} history={history} />
+        <ConnectedRouter history={history}>
+          {getRoutes(store, store.getState().pluginsHandler.files)}
+        </ConnectedRouter>
       </Provider>
     );
   }
