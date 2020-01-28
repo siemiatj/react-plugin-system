@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
 
 import { addPlugins } from '../actions/PluginActions';
 import PluginsRegistry from '../services/PluginsRegistry';
@@ -9,7 +8,6 @@ import CustomRouter from './CustomRouter';
 import configureStore from '../configureStore';
 
 const store = configureStore(browserHistory);
-const history = syncHistoryWithStore(browserHistory, store);
 const APP_PLUGINS = PLUGINS ? PLUGINS : [];
 
 export default class App extends Component {

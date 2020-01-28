@@ -1,13 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const FilterLink = ({ filter, children }) => (
   <Link
     to={`/todos/${filter === 'all' ? '' : filter}`}
-    activeStyle={{
-      textDecoration: 'none',
-      color: 'black',
-    }}
   >
     {children}
   </Link>

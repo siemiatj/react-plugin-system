@@ -2,7 +2,8 @@ var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config');
 
-var listenHost = process.env.DOCKER ? '0.0.0.0' : 'localhost';
+// var listenHost = process.env.DOCKER ? '0.0.0.0' : 'localhost';
+var listenHost = '0.0.0.0';
 
 new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,

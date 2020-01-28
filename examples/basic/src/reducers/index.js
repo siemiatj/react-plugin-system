@@ -1,13 +1,13 @@
-import { routerReducer as routing } from 'react-router-redux';
+import { connectRouter } from 'connected-react-router';
 
 import pluginsHandler from './pluginsHandler';
 import todos, * as fromTodos from './todos';
 
-export default {
+export const createRootReducer = (history) => ({
+  router: connectRouter(history),
   todos,
   pluginsHandler,
-  routing,
-};
+})
 
 export const getVisibleTodos = (state, filter) =>
   fromTodos.getVisibleTodos(state.todos, filter);
