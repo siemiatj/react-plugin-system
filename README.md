@@ -7,7 +7,7 @@ Although plugin systems are usually custom and application-specific it's nice to
 This is a pretty simple extension to your typical React application. What you'll need is :
 * ReactJS 16+
 * Redux 3+
-* react-router 3.x
+* react-router 4.x+
 
 ## Contents of this repository
 
